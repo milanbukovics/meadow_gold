@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Meadow Gold × UH Warriors — Collect</title>
+  <script src="https://unpkg.com/react@18/umd/react.production.min.js"></script>
+  <script src="https://unpkg.com/react-dom@18/umd/react-dom.production.min.js"></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; }
+    .flip-card { perspective: 1200px; }
+    .flip-inner { transform-style: preserve-3d; transition: transform 0.85s cubic-bezier(0.175,0.885,0.32,1.275); }
+    .flip-inner.flipped { transform: rotateY(180deg); }
+    .flip-front, .flip-back { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; border-radius: 1.25rem; }
+    .flip-back { transform: rotateY(180deg); overflow: hidden; }
+  </style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+
+const PHOTOS = {
+  athlete1: 'Karol_O.png',
+  athlete2: 'Holly_N.png',
+  prize1:   'LaniMoo.png',
+};
+
+const RARITY_COLOR = { Common:'#6b7280', Rare:'#3b82f6', Epic:'#8b5cf6', Legendary:'#f59e0b' };
+
+const CARDS = [
+  { id:'a1', code:'836275', type:'athlete', sport:'Swimming', name:'Karol Ostrowski', position:'Freestyler', team:"Men's Swim Team", emoji:'🏊‍♂️', rarity:'Epic', gradient:'linear-gradient(135deg,#004d1a,#007A33)', photoKey:'athlete1' },
+  { id:'a2', code:'274819', type:'athlete', sport:'Volleyball', name:'Holly Nelson', position:'Freestyler', team:"Swim Team", emoji:'🏊‍♂️', rarity:'Epic', gradient:'linear-gradient(135deg,#004d1a,#007A33)', photoKey:'athlete2' },
+  { id:'a3', code:'519302', type:'athlete', sport:'Football', name:'Warrior #3', position:'Linebacker', team:"Warriors Football", emoji:'🏈', rarity:'Rare', gradient:'linear-gradient(135deg,#007A33,#43a868)' },
+  { id:'a4', code:'748201', type:'athlete', sport:'Baseball', name:'Warrior #4', position:'Pitcher', team:"Rainbow Warriors Baseball", emoji:'⚾', rarity:'Common', gradient:'linear-gradient(135deg,#1b6e3a,#007A33)' },
+  { id:'a5', code:'930174', type:'athlete', sport:"Women's Basketball", name:'Warrior #5', position:'Forward', team:"Rainbow Wahine Basketball", emoji:'🏀', rarity:'Common', gradient:'linear-gradient(135deg,#007A33,#5cb87d)' },
+  { id:'a6', code:'612847', type:'athlete', sport:'Soccer', name:'Warrior #6', position:'Midfielder', team:"Rainbow Wahine Soccer", emoji:'⚽', rarity:'Rare', gradient:'linear-gradient(135deg,#005522,#007A33)' },
+  { id:'p1', code:'000001', type:'prize', name:'Lani Moo Farm Experience', description:"A nostalgic guided tour inspired by Hawaii's beloved Lani Moo dairy tradition.", emoji:'🐄', rarity:'Legendary', gradient:'linear-gradient(135deg,#b8860a,#F5C518)', photoKey:'prize1' },
+  { id:'p2', code:'000002', type:'prize', name:'UH Game Day VIP', description:'Two VIP tickets to any UH Warriors home game + a Meadow Gold snack pack!', emoji:'🎟️', rarity:'Epic', gradient:'linear-gradient(135deg,#9a6f00,#e8a800)' },
+];
+
+const QUESTIONS = [
+  { id:'size', q:'How many people are in your household?', opts:['Just me','2 people','3–4 people','5+ people'] },
+  { id:'age',  q:'What is your age group?', opts:['Under 18','18–34','35–54','55+'] },
+  { id:'prods',q:'Which Meadow Gold products do you buy most?', opts:['Milk / Chocolate Milk','POG Juice','Teas & Drinks','Ice Cream & Dairy'], multi:true },
+];
+
+const btn = (bg, color, extra={}) => ({
+  background:bg, color, border:'none', borderRadius:'0.875rem',
+  padding:'0.9rem 1.5rem', fontWeight:800, fontSize:'1rem',
+  cursor:'pointer', width:'100%', ...extra
+});
+
+function App() {
+  const [screen, setScreen]     = React.useState('landing');
+  const [qIdx, setQIdx]         = React.useState(0);
+  const [answers, setAnswers]   = React.useState({});
+  const [code, setCode]         = React.useState('');
+  const [codeErr, setCodeErr]   = React.useState('');
+  const [revealed, setRevealed] = React.useState(null);
+  const [flipped, setFlipped]   = React.useState(false);
+  const [showLogin, setShowLogin] = React.useState(false);
+  const [loggedIn, setLoggedIn] = React.useState(false);
+  const [username, setUsername] = React.useState('');
+  const [lForm, setLForm]       = React.useState({u:'',p:''});
+  const [lErr, setLErr]         = React.useState('');
+  const [collection, setCollection] = React.useState([]);
+
+  const q = QUESTIONS[qIdx];
+
+  const pickAnswer = (id, val) => {
+    if (q.multi) {
+      const prev = answers[id] || [];
+      setAnswers({...answers, [id]: prev.includes(val) ? prev.filter(x=>x!==val) : [...prev,val]});
+    } else {
+      setAnswers({...answers, [id]: val});
+      setTimeout(() => {
+        if (qIdx < QUESTIONS.length - 1) setQIdx(qIdx + 1);
+        else setScreen('code');
+      }, 220);
+    }
+  };
+
+  const submitCode = () => {
+    const card = CARDS.find(c => c.code === code.trim());
+    if (!card) { setCodeErr('Code not found — check inside the cap and try again.'); return; }
+    setRevealed(card); setFlipped(false); setCodeErr('');
+    setScreen('reveal');
+    setTimeout(() => setFlipped(true), 700);
+  };
+
+  const addToCollection = () => {
+    if (!collection.find(c=>c.id===revealed.id)) setCollection(p=>[...p,revealed]);
+    setScreen('collection');
+  };
+
+  const doLogin = () => {
+    if (!lForm.u) { setLErr('Please enter a username.'); return; }
+    setUsername(lForm.u); setLoggedIn(true); setShowLogin(false); setLErr('');
+    addToCollection();
+  };
+
+  // ── LANDING ──
+  if (screen === 'landing') return (
+    <div style={{minHeight:'100vh', background:'linear-gradient(160deg,#003d15,#007A33 55%,#004d1a)', display:'flex', flexDirection:'column', alignItems:'center', justifyContent:'center', padding:'2rem', position:'relative', overflow:'hidden'}}>
+      <div style={{position:'absolute',top:-100,right:-80,width:320,height:320,borderRadius:'50%',background:'rgba(245,197,24,0.07)'}}/>
+      <div style={{background:'white',borderRadius:'1.5rem',padding:'0.9rem 1.6rem',display:'inline-flex',alignItems:'center',gap:'0.6rem',marginBottom:'1.5rem',boxShadow:'0 8px 32px rgba(0,0,0,0.25)'}}>
+        <span style={{fontSize:'1.8rem'}}>🐄</span>
+        <div>
+          <div style={{fontWeight:900,fontSize:'1.2rem',color:'#007A33'}}>MEADOW GOLD</div>
+          <div style={{fontWeight:700,fontSize:'0.65rem',color:'#F5C518',letterSpacing:'2.5px'}}>× UH WARRIORS</div>
+        </div>
+        <span style={{fontSize:'1.8rem'}}>🤙</span>
+      </div>
+      <h1 style={{color:'white',fontSize:'3rem',fontWeight:900,textAlign:'center',margin:'0 0 0.5rem',lineHeight:1.1}}>
+        Scan. Sip.<br/><span style={{color:'#F5C518'}}>Collect.</span>
+      </h1>
+      <p style={{color:'rgba(255,255,255,0.75)',fontSize:'1rem',textAlign:'center',margin:'0 0 0.4rem'}}>Find the unique code under your Meadow Gold gallon cap</p>
+      <p style={{color:'rgba(255,255,255,0.5)',fontSize:'0.85rem',textAlign:'center',margin:'0 0 2rem'}}>Unlock UH athlete cards & exclusive prizes 🌺</p>
+      <div style={{display:'flex',gap:'0.6rem',marginBottom:'2.5rem'}}>
+        {[{e:'🏈',g:'linear-gradient(135deg,#004d1a,#007A33)',r:'-5deg'},{e:'🏀',g:'linear-gradient(135deg,#007A33,#00c853)',r:'0deg',t:'-10px'},{e:'🐄',g:'linear-gradient(135deg,#b8860a,#F5C518)',r:'5deg'}].map((c,i)=>(
+          <div key={i} style={{background:c.g,borderRadius:'0.85rem',width:64,height:92,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',boxShadow:'0 6px 20px rgba(0,0,0,0.35)',border:'2px solid rgba(255,255,255,0.25)',transform:`rotate(${c.r}) translateY(${c.t||0})`}}>
+            <div style={{fontSize:'2rem'}}>{c.e}</div>
+            <div style={{width:28,height:3,background:'rgba(255,255,255,0.45)',borderRadius:2,marginTop:6}}/>
+            <div style={{width:20,height:3,background:'rgba(255,255,255,0.25)',borderRadius:2,marginTop:3}}/>
+          </div>
+        ))}
+      </div>
+      <button onClick={()=>setScreen('quiz')} style={{...btn('#F5C518','#1a1a1a',{width:'auto',padding:'1rem 3rem',borderRadius:'2rem',boxShadow:'0 4px 20px rgba(245,197,24,0.45)'})}}>GET STARTED 🏄</button>
+      <p style={{color:'rgba(255,255,255,0.35)',fontSize:'0.72rem',marginTop:'1.25rem'}}>No purchase necessary. See official rules.</p>
+    </div>
+  );
+
+  // ── QUIZ ──
+  if (screen === 'quiz') {
+    const progress = (qIdx / QUESTIONS.length) * 100;
+    const sel = answers[q.id] || [];
+    return (
+      <div style={{minHeight:'100vh',background:'#f0f7f3',display:'flex',flexDirection:'column'}}>
+        <div style={{background:'linear-gradient(90deg,#007A33,#004d1a)',padding:'1rem 1.25rem',display:'flex',alignItems:'center',gap:'0.75rem'}}>
+          <div style={{background:'white',borderRadius:'0.6rem',padding:'0.35rem 0.7rem'}}>
+            <span style={{fontWeight:800,color:'#007A33',fontSize:'0.78rem'}}>🐄 MEADOW GOLD</span>
+          </div>
+          <div style={{flex:1,background:'rgba(255,255,255,0.2)',borderRadius:'1rem',height:6}}>
+            <div style={{width:`${progress}%`,background:'#F5C518',height:'100%',borderRadius:'1rem',transition:'width 0.35s'}}/>
+          </div>
+          <span style={{color:'white',fontSize:'0.82rem',fontWeight:700}}>{qIdx+1}/{QUESTIONS.length}</span>
+        </div>
+        <div style={{flex:1,display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'1.5rem'}}>
+          <div style={{background:'white',borderRadius:'1.5rem',padding:'2rem',width:'100%',maxWidth:420,boxShadow:'0 4px 24px rgba(0,100,40,0.1)'}}>
+            <div style={{background:'#e8f5ee',borderRadius:'2rem',padding:'0.35rem 0.85rem',display:'inline-block',marginBottom:'0.85rem'}}>
+              <span style={{color:'#007A33',fontWeight:700,fontSize:'0.75rem'}}>Question {qIdx+1} of {QUESTIONS.length}</span>
+            </div>
+            <h2 style={{color:'#111',fontSize:'1.25rem',fontWeight:800,marginBottom:'1.25rem',lineHeight:1.3}}>{q.q}</h2>
+            <div style={{display:'flex',flexDirection:'column',gap:'0.65rem'}}>
+              {q.opts.map(opt => {
+                const on = q.multi ? sel.includes(opt) : answers[q.id]===opt;
+                return (
+                  <button key={opt} onClick={()=>pickAnswer(q.id,opt)} style={{background:on?'#007A33':'#f8faf8',color:on?'white':'#333',border:`2px solid ${on?'#007A33':'#e0ebe2'}`,borderRadius:'0.75rem',padding:'0.8rem 1rem',fontSize:'0.92rem',fontWeight:600,cursor:'pointer',textAlign:'left'}}>
+                    {on?'✓ ':''}{opt}
+                  </button>
+                );
+              })}
+            </div>
+            {q.multi && (
+              <button onClick={()=>{ if(qIdx<QUESTIONS.length-1) setQIdx(qIdx+1); else setScreen('code'); }} style={{...btn('#007A33','white',{marginTop:'1.1rem'})}}>Continue →</button>
+            )}
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  // ── CODE ENTRY ──
+  if (screen === 'code') return (
+    <div style={{minHeight:'100vh',background:'linear-gradient(160deg,#004d1a,#007A33)',display:'flex',alignItems:'center',justifyContent:'center',padding:'1.5rem'}}>
+      <div style={{background:'white',borderRadius:'1.75rem',padding:'2rem 1.75rem',width:'100%',maxWidth:390,boxShadow:'0 10px 50px rgba(0,0,0,0.25)'}}>
+        <div style={{textAlign:'center',marginBottom:'1.5rem'}}>
+          <div style={{margin:'0 auto 0.5rem'}}>
+            <svg width="64" height="64" viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="32" cy="32" r="30" fill="#e8f5ee" stroke="#007A33" strokeWidth="3"/>
+              <circle cx="32" cy="32" r="23" fill="white" stroke="#007A33" strokeWidth="2"/>
+              {[...Array(12)].map((_,i)=>{
+                const a=(i*30)*Math.PI/180, x1=32+23*Math.cos(a), y1=32+23*Math.sin(a), x2=32+29*Math.cos(a), y2=32+29*Math.sin(a);
+                return <line key={i} x1={x1} y1={y1} x2={x2} y2={y2} stroke="#007A33" strokeWidth="1.5" strokeOpacity="0.5"/>;
+              })}
+              <circle cx="32" cy="32" r="5" fill="#007A33" opacity="0.15"/>
+              <text x="32" y="36.5" textAnchor="middle" fontSize="10" fontWeight="900" fill="#007A33" fontFamily="sans-serif">CAP</text>
+            </svg>
+          </div>
+          <h2 style={{color:'#007A33',fontWeight:900,fontSize:'1.5rem',margin:'0.25rem 0 0.5rem'}}>Enter Your Cap Code</h2>
+          <p style={{color:'#777',fontSize:'0.875rem',margin:0,lineHeight:1.5}}>Find the unique code printed on the inside of your Meadow Gold gallon cap</p>
+        </div>
+        <input
+          value={code}
+          onChange={e=>{setCode(e.target.value);setCodeErr('');}}
+          onKeyDown={e=>e.key==='Enter'&&submitCode()}
+          placeholder="e.g. 836275"
+          inputMode="numeric"
+          style={{width:'100%',border:`2px solid ${codeErr?'#ef4444':'#e5e5e5'}`,borderRadius:'0.75rem',padding:'0.85rem 1rem',fontSize:'1.3rem',fontWeight:700,color:'#007A33',textAlign:'center',letterSpacing:'4px',outline:'none',marginBottom:'0.5rem'}}
+        />
+        {codeErr && <p style={{color:'#ef4444',fontSize:'0.82rem',textAlign:'center',margin:'0 0 0.75rem'}}>{codeErr}</p>}
+        <button onClick={submitCode} style={{...btn('#007A33','white')}}>REVEAL MY CARD ✨</button>
+      </div>
+    </div>
+  );
+
+  // ── REVEAL ──
+  if (screen === 'reveal') {
+    const card = revealed;
+    const isGold = card.type === 'prize';
+    const photo = card.photoKey && PHOTOS[card.photoKey];
+    return (
+      <div style={{minHeight:'100vh',background:'#070d0a',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',padding:'1.5rem',position:'relative',overflow:'hidden'}}>
+        {flipped && <div style={{position:'absolute',inset:0,background:`radial-gradient(ellipse 70% 60% at 50% 40%, ${isGold?'rgba(245,197,24,0.3)':'rgba(0,122,51,0.3)'}, transparent)`,pointerEvents:'none'}}/>}
+        <p style={{color:'rgba(255,255,255,0.55)',fontSize:'0.82rem',letterSpacing:'2.5px',fontWeight:700,marginBottom:'1.5rem',textAlign:'center'}}>
+          {flipped ? (isGold?'🌟 LEGENDARY FIND!':'🎉 YOU UNLOCKED') : '⏳ REVEALING YOUR CARD...'}
+        </p>
+        <div className="flip-card" style={{width:230,height:330,position:'relative',marginBottom:'2rem'}}>
+          <div className={`flip-inner${flipped?' flipped':''}`} style={{width:'100%',height:'100%',position:'relative'}}>
+            {/* Back */}
+            <div className="flip-front" style={{background:'linear-gradient(135deg,#007A33,#003d15)',display:'flex',flexDirection:'column',alignItems:'center',justifyContent:'center',boxShadow:'0 12px 48px rgba(0,0,0,0.6)',border:'2.5px solid rgba(245,197,24,0.35)'}}>
+              <div style={{width:80,height:80,background:'rgba(255,255,255,0.08)',borderRadius:'50%',display:'flex',alignItems:'center',justifyContent:'center',marginBottom:'0.75rem',border:'2px solid rgba(255,255,255,0.15)'}}>
+                <span style={{fontSize:'2.5rem'}}>🐄</span>
+              </div>
+              <div style={{color:'white',fontWeight:900,fontSize:'1rem',letterSpacing:'1px'}}>MEADOW GOLD</div>
+              <div style={{color:'#F5C518',fontWeight:700,fontSize:'0.7rem',letterSpacing:'2.5px',marginTop:'0.2rem'}}>× UH WARRIORS</div>
+            </div>
+            {/* Front */}
+            <div className="flip-back" style={{background:card.gradient,border:'2.5px solid rgba(255,255,255,0.25)'}}>
+              <div style={{position:'absolute',top:'0.65rem',left:'0.65rem',background:RARITY_COLOR[card.rarity],color:'white',borderRadius:'1rem',padding:'0.18rem 0.55rem',fontSize:'0.6rem',fontWeight:800,letterSpacing:'1px',zIndex:10}}>
+                {card.rarity.toUpperCase()}
+              </div>
+              <div style={{width:'100%',height:195,overflow:'hidden'}}>
+                {photo
+                  ? <img src={photo} alt={card.name} style={{width:'100%',height:'195px',objectFit:'cover',objectPosition:isGold?'center':'top center',display:'block'}}/>
+                  : <div style={{width:'100%',height:'100%',display:'flex',alignItems:'center',justifyContent:'center',fontSize:'5rem'}}>{card.emoji}</div>
+                }
+              </div>
+              <div style={{position:'absolute',bottom:0,left:0,right:0,background:'rgba(0,0,0,0.6)',backdropFilter:'blur(6px)',padding:'0.65rem 0.85rem'}}>
+                <div style={{color:'rgba(255,255,255,0.65)',fontSize:'0.6rem',fontWeight:700,letterSpacing:'1.5px',marginBottom:'0.15rem'}}>
+                  {card.type==='athlete'?card.sport.toUpperCase():'🏆 SPECIAL PRIZE'}
+                </div>
+                <div style={{color:'white',fontWeight:900,fontSize:'0.95rem',lineHeight:1.2,marginBottom:'0.2rem'}}>{card.name}</div>
+                <div style={{color:'rgba(255,255,255,0.75)',fontSize:'0.65rem',fontWeight:600}}>
+                  {card.type==='athlete'?`${card.position} · UH ${card.team}`:card.description}
+                </div>
+                <div style={{marginTop:'0.45rem',background:'rgba(255,255,255,0.18)',borderRadius:'0.4rem',padding:'0.2rem 0.45rem',display:'inline-block'}}>
+                  <span style={{color:'white',fontWeight:800,fontSize:'0.58rem',letterSpacing:'1px'}}>🌺 UH WARRIORS</span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        {flipped && (
+          <div style={{textAlign:'center',width:'100%',maxWidth:300}}>
+            <button onClick={()=>loggedIn?addToCollection():setShowLogin(true)} style={{...btn(isGold?'#F5C518':'#007A33',isGold?'#1a1a1a':'white',{borderRadius:'2rem',marginBottom:'0.75rem'})}}>
+              ADD TO COLLECTION 📦
+            </button>
+            <br/>
+            <button onClick={()=>{setCode('');setScreen('code');}} style={{background:'transparent',color:'rgba(255,255,255,0.4)',border:'none',fontSize:'0.82rem',cursor:'pointer'}}>
+              Enter another code
+            </button>
+          </div>
+        )}
+        {showLogin && (
+          <div style={{position:'fixed',inset:0,background:'rgba(0,0,0,0.85)',display:'flex',alignItems:'center',justifyContent:'center',padding:'1.5rem',zIndex:200}}>
+            <div style={{background:'white',borderRadius:'1.75rem',padding:'2rem 1.75rem',width:'100%',maxWidth:350}}>
+              <div style={{textAlign:'center',marginBottom:'1.5rem'}}>
+                <div style={{fontSize:'3rem',marginBottom:'0.5rem'}}>{card.emoji}</div>
+                <h3 style={{color:'#007A33',fontWeight:900,fontSize:'1.2rem',margin:'0 0 0.4rem'}}>Save {card.name}!</h3>
+                <p style={{color:'#777',fontSize:'0.82rem',margin:0}}>Log in to add this card to your permanent collection</p>
+              </div>
+              <input placeholder="Username" value={lForm.u} onChange={e=>setLForm({...lForm,u:e.target.value})} style={{width:'100%',border:'2px solid #e5e5e5',borderRadius:'0.75rem',padding:'0.85rem 1rem',fontSize:'1rem',outline:'none',marginBottom:'0.6rem'}}/>
+              <input placeholder="Password" type="password" value={lForm.p} onChange={e=>setLForm({...lForm,p:e.target.value})} style={{width:'100%',border:'2px solid #e5e5e5',borderRadius:'0.75rem',padding:'0.85rem 1rem',fontSize:'1rem',outline:'none',marginBottom:'0.9rem'}}/>
+              {lErr && <p style={{color:'#ef4444',fontSize:'0.8rem',margin:'0 0 0.75rem'}}>{lErr}</p>}
+              <button onClick={doLogin} style={{...btn('#007A33','white',{marginBottom:'0.65rem'})}}>LOG IN & SAVE 🏆</button>
+              <button onClick={()=>setShowLogin(false)} style={{...btn('transparent','#aaa')}}>Not now</button>
+            </div>
+          </div>
+        )}
+      </div>
+    );
+  }
+
+  // ── COLLECTION ──
+  if (screen === 'collection') return (
+    <div style={{minHeight:'100vh',background:'#f0f7f3'}}>
+      <div style={{background:'linear-gradient(100deg,#004d1a,#007A33)',padding:'1.25rem 1.5rem'}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',maxWidth:560,margin:'0 auto'}}>
+          <div>
+            <div style={{color:'rgba(255,255,255,0.6)',fontSize:'0.7rem',fontWeight:700,letterSpacing:'1.5px'}}>WELCOME BACK</div>
+            <div style={{color:'white',fontWeight:900,fontSize:'1.25rem'}}>{username||'Collector'} 🤙</div>
+          </div>
+          <div style={{background:'#F5C518',borderRadius:'1.5rem',padding:'0.35rem 0.85rem'}}>
+            <span style={{fontWeight:800,color:'#1a1a1a',fontSize:'0.82rem'}}>🃏 {collection.length}/{CARDS.length} Cards</span>
+          </div>
+        </div>
+      </div>
+      <div style={{background:'white',padding:'0.9rem 1.5rem',borderBottom:'1px solid #dde8e0'}}>
+        <div style={{maxWidth:560,margin:'0 auto'}}>
+          <div style={{display:'flex',justifyContent:'space-between',marginBottom:'0.35rem'}}>
+            <span style={{fontSize:'0.78rem',color:'#666',fontWeight:600}}>Collection Progress</span>
+            <span style={{fontSize:'0.78rem',color:'#007A33',fontWeight:700}}>{Math.round((collection.length/CARDS.length)*100)}%</span>
+          </div>
+          <div style={{background:'#e8ede9',borderRadius:'1rem',height:8}}>
+            <div style={{width:`${(collection.length/CARDS.length)*100}%`,background:'linear-gradient(90deg,#007A33,#F5C518)',height:'100%',borderRadius:'1rem',transition:'width 0.5s'}}/>
+          </div>
+        </div>
+      </div>
+      <div style={{padding:'1.5rem',maxWidth:560,margin:'0 auto'}}>
+        {['athlete','prize'].map(type=>(
+          <div key={type} style={{marginBottom:'1.5rem'}}>
+            <h3 style={{color:'#007A33',fontWeight:800,fontSize:'0.9rem',letterSpacing:'1px',marginBottom:'0.75rem'}}>
+              {type==='athlete'?'🏅 ATHLETE CARDS':'🏆 PRIZE CARDS'}
+            </h3>
+            <div style={{display:'grid',gridTemplateColumns:'repeat(4,1fr)',gap:'0.6rem'}}>
+              {CARDS.filter(c=>c.type===type).map(card=>{
+                const owned = collection.find(c=>c.id===card.id);
+                const photo = card.photoKey && PHOTOS[card.photoKey];
+                return (
+                  <div key={card.id} style={{borderRadius:'1rem',background:owned?card.gradient:'#dde8e0',overflow:'hidden',display:'flex',flexDirection:'column',boxShadow:owned?'0 4px 14px rgba(0,0,0,0.15)':'none',opacity:owned?1:0.5}}>
+                    {owned && photo
+                      ? <img src={photo} alt={card.name} style={{width:'100%',height:120,objectFit:'cover',objectPosition:card.type==='prize'?'center':'top center'}}/>
+                      : <div style={{height:90,display:'flex',alignItems:'center',justifyContent:'center',fontSize:'2.5rem'}}>
+                          {owned?card.emoji:'❓'}
+                        </div>
+                    }
+                    <div style={{background:'rgba(0,0,0,0.4)',padding:'0.4rem 0.35rem',textAlign:'center'}}>
+                      <div style={{color:owned?'white':'#999',fontWeight:800,fontSize:'0.6rem',lineHeight:1.3}}>{owned?card.name:'???'}</div>
+                      {owned && <div style={{marginTop:'0.25rem',background:RARITY_COLOR[card.rarity],borderRadius:'0.3rem',padding:'0.08rem 0.3rem',display:'inline-block'}}><span style={{color:'white',fontSize:'0.48rem',fontWeight:800}}>{card.rarity.toUpperCase()}</span></div>}
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        ))}
+        <button onClick={()=>{setCode('');setScreen('code');}} style={{...btn('#007A33','white')}}>+ Enter Another Cap Code</button>
+        <button onClick={()=>setScreen('landing')} style={{...btn('transparent','#007A33',{border:'2px solid #c5e0cc',marginTop:'0.65rem'})}}>← Back to Home</button>
+      </div>
+    </div>
+  );
+
+  return null;
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>
