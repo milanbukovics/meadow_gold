@@ -1,4 +1,4 @@
-# Meadow Gold × UH Warriors — Collect
+# Meadow Gold × UH Warriors - Collect
 
 A web prototype built for the **Innovate808 Business Competition**. It's a digital collectible card experience that partners Meadow Gold (Hawaii's local dairy brand) with UH Warriors athletics.
 
@@ -20,8 +20,8 @@ Customers find a unique 6-digit code under their Meadow Gold gallon cap, enter i
 
 | Code   | Athlete            | Sport               | Rarity  |
 |--------|--------------------|---------------------|---------|
-| 836275 | Karol Ostrowski    | Men's Basketball    | Rare    |
-| 274819 | Holly N.           | Volleyball          | Epic    |
+| 836275 | Karol Ostrowski    | Men's Swim Team     | Rare    |
+| 274819 | Holly N.           | Women's Swim Team   | Epic    |
 | 519302 | Warrior #3         | Football            | Rare    |
 | 748201 | Warrior #4         | Baseball            | Common  |
 | 930174 | Warrior #5         | Women's Basketball  | Common  |
