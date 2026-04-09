@@ -1,0 +1,356 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>About — Meadow Gold × UH Warriors</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <style>
+    .about-section {
+      padding: 4.5rem 1.5rem;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      position: relative;
+      max-width: 680px;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 20px;
+      top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(180deg, var(--green), rgba(0,122,51,0.1));
+    }
+
+    .timeline-item {
+      display: flex;
+      gap: 1.5rem;
+      align-items: flex-start;
+      padding-bottom: 2.5rem;
+    }
+
+    .tl-dot {
+      width: 42px;
+      height: 42px;
+      background: white;
+      border: 3px solid var(--green);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+      box-shadow: 0 3px 12px rgba(0,122,51,0.2);
+      z-index: 1;
+    }
+
+    .tl-content {
+      padding-top: 0.4rem;
+    }
+
+    .tl-year {
+      font-size: 0.7rem;
+      font-weight: 800;
+      letter-spacing: 1.5px;
+      color: var(--green);
+      margin-bottom: 0.3rem;
+    }
+
+    .tl-title {
+      font-weight: 900;
+      font-size: 1rem;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .tl-desc {
+      color: var(--muted);
+      font-size: 0.875rem;
+      line-height: 1.65;
+    }
+
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .team-card {
+      background: white;
+      border: 1px solid var(--border);
+      border-radius: 1.25rem;
+      padding: 1.75rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 4px 20px rgba(0,100,40,0.07);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .team-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 10px 32px rgba(0,100,40,0.13);
+    }
+
+    .team-avatar {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2rem;
+    }
+
+    .team-name  { font-weight: 800; font-size: 0.95rem; color: var(--text); margin-bottom: 0.2rem; }
+    .team-role  { font-size: 0.75rem; font-weight: 700; color: var(--green); letter-spacing: 1px; margin-bottom: 0.5rem; }
+    .team-desc  { font-size: 0.82rem; color: var(--muted); line-height: 1.55; }
+
+    .value-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.25rem;
+    }
+
+    .value-card {
+      background: var(--light-green);
+      border: 1px solid var(--border);
+      border-radius: 1.1rem;
+      padding: 1.5rem;
+    }
+
+    .value-icon  { font-size: 2rem; margin-bottom: 0.75rem; display: block; }
+    .value-title { font-weight: 800; font-size: 0.95rem; color: var(--text); margin-bottom: 0.4rem; }
+    .value-desc  { font-size: 0.83rem; color: var(--muted); line-height: 1.6; }
+
+    @media (max-width: 768px) {
+      .about-grid { grid-template-columns: 1fr !important; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <span class="nav-emoji">🐄</span>
+      <div class="nav-brand-text">
+        <div class="brand-name">MEADOW GOLD</div>
+        <div class="brand-sub">× UH WARRIORS</div>
+      </div>
+    </a>
+    <button class="nav-toggle" onclick="document.getElementById('nav-menu').classList.toggle('open')" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="nav-links" id="nav-menu">
+      <a href="index.html">Collect</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="prizes.html">Prizes</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="about.html" class="active">About</a>
+    </div>
+    <a href="index.html" class="nav-cta">Start Collecting 🏄</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="eyebrow">THE PARTNERSHIP</div>
+  <h1>Two Hawaii <span>Icons,</span><br/>One Big Idea</h1>
+  <p>Meadow Gold and UH Warriors share more than the color green — they share a love for Hawaii, community, and bringing people together.</p>
+</section>
+
+<!-- PARTNERSHIP STORY -->
+<div class="about-section">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center;" class="about-grid">
+    <div class="about-img-block">🐄</div>
+    <div class="about-text">
+      <div class="section-label">ABOUT MEADOW GOLD</div>
+      <h2>Hawaii's Dairy Brand Since 1897</h2>
+      <p>Meadow Gold has been a part of Hawaii's everyday life for over a century. From the iconic glass milk bottles of the early 1900s to the beloved Lani Moo character that generations of kamaʻāina grew up with, Meadow Gold is more than just dairy — it's a piece of Hawaii's heritage.</p>
+      <p>Today, Meadow Gold produces a wide range of products beloved across the islands: whole milk, chocolate milk, the classic POG juice, teas, ice cream, and more. Every sip connects Hawaii families to a tradition of quality and local pride.</p>
+      <ul class="highlight-list">
+        <li>Over 125 years serving Hawaii families</li>
+        <li>Home of the beloved Lani Moo mascot</li>
+        <li>Full lineup: milk, POG, teas, ice cream & more</li>
+        <li>Committed to local sourcing and community</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider"/>
+
+<div class="about-section" style="padding-top: 3rem;">
+  <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; direction: rtl;" class="about-grid">
+    <div class="about-img-block" style="direction: ltr;">🏈</div>
+    <div class="about-text" style="direction: ltr;">
+      <div class="section-label">ABOUT UH WARRIORS</div>
+      <h2>The Pride of Mānoa</h2>
+      <p>The University of Hawaiʻi at Mānoa Warriors compete across 20 varsity sports, representing the islands on the national stage with aloha. From Rainbow Warriors football filling Clarence T.C. Ching Athletics Complex to the Rainbow Wahine volleyball dynasty, UH athletics is a source of statewide pride and community spirit.</p>
+      <p>UH athletes are more than competitors — they're role models for the next generation of Hawaii kids. This partnership gives fans a new way to connect with their favorite Warriors while celebrating the values of hard work, community, and local pride.</p>
+      <ul class="highlight-list">
+        <li>20 varsity sports programs at UH Mānoa</li>
+        <li>Multiple national championships across sports</li>
+        <li>Deep ties to the Hawaii community and culture</li>
+        <li>A pipeline for local athletic talent to shine</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider"/>
+
+<!-- THE IDEA -->
+<div class="about-section" style="padding-top: 3.5rem; padding-bottom: 2rem;">
+  <div style="max-width: 700px;">
+    <div class="section-label">THE CONCEPT</div>
+    <h2 class="section-title">Why Collectible Cards?</h2>
+    <p class="section-sub">Because community, repeat purchase, and athlete visibility all start with a story worth sharing.</p>
+  </div>
+
+  <div class="value-grid">
+    <div class="value-card">
+      <span class="value-icon">🛒</span>
+      <div class="value-title">Drive Repeat Purchases</div>
+      <p class="value-desc">Every gallon is a new chance to unlock a card. Collectors naturally buy more Meadow Gold to complete their set — turning a routine grocery run into an exciting hunt.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">🌟</span>
+      <div class="value-title">Spotlight UH Athletes</div>
+      <p class="value-desc">NIL partnerships and athlete visibility matter. This gives UH athletes a platform to be celebrated by a wider Hawaii audience beyond the stadium.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">📊</span>
+      <div class="value-title">Gather Consumer Data</div>
+      <p class="value-desc">The pre-reveal survey collects first-party consumer insights for Meadow Gold — household size, age group, product preferences — in a fun, non-intrusive way.</p>
+    </div>
+    <div class="value-card">
+      <span class="value-icon">🤝</span>
+      <div class="value-title">Build Community</div>
+      <p class="value-desc">The leaderboard, island challenge, and trading features create a shared experience that connects Meadow Gold fans with UH Warriors fans across the islands.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="section-divider"/>
+
+<!-- INNOVATE808 -->
+<div class="about-section" style="padding-top: 3.5rem;">
+  <div style="background: linear-gradient(135deg, #004d1a, #007A33); border-radius: 1.75rem; padding: 3rem 2.5rem; color: white; position: relative; overflow: hidden;">
+    <div style="position: absolute; top: -40px; right: -40px; width: 200px; height: 200px; border-radius: 50%; background: rgba(245,197,24,0.08);"></div>
+    <div style="position: absolute; bottom: -60px; left: -30px; width: 160px; height: 160px; border-radius: 50%; background: rgba(255,255,255,0.04);"></div>
+    <div style="position: relative; max-width: 640px;">
+      <div style="background: rgba(245,197,24,0.15); border: 1px solid rgba(245,197,24,0.4); border-radius: 2rem; padding: 0.3rem 0.9rem; display: inline-block; margin-bottom: 1rem;">
+        <span style="color: #F5C518; font-size: 0.7rem; font-weight: 800; letter-spacing: 2px;">INNOVATE808 COMPETITION</span>
+      </div>
+      <h2 style="font-size: 1.85rem; font-weight: 900; line-height: 1.2; margin-bottom: 1rem;">Built for Hawaii's Premier Business Competition</h2>
+      <p style="color: rgba(255,255,255,0.75); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1rem;">
+        This prototype was created for the <strong style="color: white;">Innovate808</strong> business competition in Hawaii — a platform for students and entrepreneurs to pitch innovative business ideas that serve Hawaii's unique economy and community.
+      </p>
+      <p style="color: rgba(255,255,255,0.75); font-size: 0.95rem; line-height: 1.7; margin-bottom: 1.5rem;">
+        The Meadow Gold × UH Warriors Collect concept was designed to demonstrate how a beloved local brand could deepen consumer engagement through digital collectibles, NIL athlete partnerships, and gamified repeat-purchase mechanics — without any complex infrastructure or app store dependency.
+      </p>
+      <div style="display: flex; gap: 0.75rem; flex-wrap: wrap;">
+        <div style="background: rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.6rem 1rem; font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.85);">🏆 Business Innovation</div>
+        <div style="background: rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.6rem 1rem; font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.85);">🌺 Made in Hawaii</div>
+        <div style="background: rgba(255,255,255,0.1); border-radius: 0.75rem; padding: 0.6rem 1rem; font-size: 0.82rem; font-weight: 700; color: rgba(255,255,255,0.85);">📱 No App Required</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ROADMAP -->
+<div class="about-section" style="padding-top: 3.5rem; padding-bottom: 2rem;">
+  <div class="section-label">WHAT'S NEXT</div>
+  <h2 class="section-title">Series 1 Is Just the Beginning</h2>
+  <p class="section-sub">If the concept takes off, here's what the roadmap looks like.</p>
+
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="tl-dot">🚀</div>
+      <div class="tl-content">
+        <div class="tl-year">SERIES 1 — NOW</div>
+        <div class="tl-title">Launch with 8 Cards</div>
+        <p class="tl-desc">Six UH athlete cards across six sports and two exclusive real-world prize cards. Available on Meadow Gold gallon jugs across Hawaii retailers.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-dot">🔄</div>
+      <div class="tl-content">
+        <div class="tl-year">SERIES 2 — NEXT SEASON</div>
+        <div class="tl-title">Expand the Roster</div>
+        <p class="tl-desc">Add more UH athletes, new sport categories, and introduce limited-edition championship cards tied to UH Warriors season milestones.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-dot">🤝</div>
+      <div class="tl-content">
+        <div class="tl-year">PHASE 2</div>
+        <div class="tl-title">Card Trading Between Collectors</div>
+        <p class="tl-desc">Build a community trading feature so collectors can swap duplicates, complete sets faster, and connect with fellow Meadow Gold fans across the islands.</p>
+      </div>
+    </div>
+
+    <div class="timeline-item">
+      <div class="tl-dot">🌍</div>
+      <div class="tl-content">
+        <div class="tl-year">PHASE 3</div>
+        <div class="tl-title">Physical Collectibles</div>
+        <p class="tl-desc">Introduce physical card printing for high-rarity cards, redeemable at select Meadow Gold retail partners — bridging the digital and physical collecting worlds.</p>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-banner">
+  <h2>Be Part of <span>Hawaii's Story</span></h2>
+  <p>Grab a Meadow Gold gallon, find your code, and start your collection today.</p>
+  <a href="index.html" class="btn-primary">Start Collecting 🏄</a>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="f-brand-name">🐄 MEADOW GOLD</div>
+      <div class="f-brand-sub">× UH WARRIORS</div>
+      <p>Hawaii's beloved dairy brand meets the spirit of UH Warriors athletics in a gamified collectible card experience.</p>
+    </div>
+    <div class="footer-col">
+      <h4>COLLECT</h4>
+      <a href="index.html">Start Collecting</a>
+      <a href="prizes.html">View All Cards</a>
+      <a href="leaderboard.html">Leaderboard</a>
+    </div>
+    <div class="footer-col">
+      <h4>INFO</h4>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="about.html">About the Partnership</a>
+      <a href="#">Official Rules</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Meadow Gold × UH Warriors. Innovate808 Competition Prototype.</span>
+    <span>Made with 🤙 in Hawaii</span>
+  </div>
+</footer>
+
+</body>
+</html>

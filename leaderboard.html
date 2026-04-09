@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Leaderboard — Meadow Gold × UH Warriors</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <style>
+    .podium {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 1rem;
+      align-items: flex-end;
+      max-width: 620px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .podium-slot {
+      background: white;
+      border-radius: 1.25rem 1.25rem 0.75rem 0.75rem;
+      text-align: center;
+      padding: 1.5rem 1rem 1.25rem;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.1);
+      position: relative;
+      transition: transform 0.2s;
+    }
+
+    .podium-slot:hover { transform: translateY(-4px); }
+
+    .podium-slot.first  { padding-top: 2rem; box-shadow: 0 8px 40px rgba(245,197,24,0.25); border: 2px solid rgba(245,197,24,0.4); }
+    .podium-slot.second { padding-top: 1.5rem; }
+    .podium-slot.third  { padding-top: 1.5rem; }
+
+    .podium-medal { font-size: 2rem; margin-bottom: 0.5rem; display: block; }
+    .podium-name  { font-weight: 900; font-size: 0.88rem; color: #111; margin-bottom: 0.2rem; }
+    .podium-loc   { font-size: 0.72rem; color: #888; margin-bottom: 0.6rem; }
+    .podium-count { font-weight: 900; font-size: 1.5rem; color: var(--green); line-height: 1; }
+    .podium-label { font-size: 0.65rem; font-weight: 700; color: #aaa; letter-spacing: 1px; }
+
+    .podium-bar {
+      height: 6px;
+      border-radius: 3px;
+      margin-top: 0.75rem;
+    }
+
+    .filter-tabs {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      background: white;
+      border: 2px solid var(--border);
+      border-radius: 2rem;
+      padding: 0.4rem 1rem;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--muted);
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .filter-tab.active,
+    .filter-tab:hover {
+      background: var(--green);
+      border-color: var(--green);
+      color: white;
+    }
+
+    .your-rank-banner {
+      background: linear-gradient(135deg, var(--dark-green), var(--green));
+      border-radius: 1.1rem;
+      padding: 1.25rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .your-rank-banner .yr-left { color: white; }
+    .your-rank-banner .yr-title { font-size: 0.7rem; font-weight: 800; letter-spacing: 1.5px; color: rgba(255,255,255,0.6); }
+    .your-rank-banner .yr-name  { font-size: 1.1rem; font-weight: 900; margin-top: 0.1rem; }
+    .your-rank-banner .yr-right { text-align: right; }
+    .your-rank-banner .yr-rank  { font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; }
+    .your-rank-banner .yr-rank-label { font-size: 0.68rem; color: rgba(255,255,255,0.6); font-weight: 700; letter-spacing: 1px; }
+
+    .lb-avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <span class="nav-emoji">🐄</span>
+      <div class="nav-brand-text">
+        <div class="brand-name">MEADOW GOLD</div>
+        <div class="brand-sub">× UH WARRIORS</div>
+      </div>
+    </a>
+    <button class="nav-toggle" onclick="document.getElementById('nav-menu').classList.toggle('open')" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="nav-links" id="nav-menu">
+      <a href="index.html">Collect</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="prizes.html">Prizes</a>
+      <a href="leaderboard.html" class="active">Leaderboard</a>
+      <a href="about.html">About</a>
+    </div>
+    <a href="index.html" class="nav-cta">Start Collecting 🏄</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="eyebrow">SERIES 1 — LIVE RANKINGS</div>
+  <h1>Top <span>Collectors</span></h1>
+  <p>Who's leading the pack? See the top collectors across Hawaii competing to complete the full 8-card set.</p>
+</section>
+
+<!-- STATS BAR -->
+<div class="stats-bar">
+  <div class="stats-bar-inner">
+    <div class="stat-item">
+      <div class="stat-val">4,821</div>
+      <div class="stat-label">TOTAL COLLECTORS</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">18,340</div>
+      <div class="stat-label">CARDS UNLOCKED</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">47</div>
+      <div class="stat-label">COMPLETE SETS</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-val">12</div>
+      <div class="stat-label">PRIZES CLAIMED</div>
+    </div>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<div class="section" style="padding-bottom: 2rem;">
+
+  <!-- Podium -->
+  <div class="section-label" style="text-align:center; margin-bottom: 1.25rem;">🏆 TOP THREE</div>
+  <div class="podium">
+
+    <!-- 2nd -->
+    <div class="podium-slot second" style="background: linear-gradient(180deg, #f8fafb, white);">
+      <span class="podium-medal">🥈</span>
+      <div class="podium-name">kai_manoa</div>
+      <div class="podium-loc">📍 Manoa, Oahu</div>
+      <div class="podium-count">7</div>
+      <div class="podium-label">CARDS</div>
+      <div class="podium-bar" style="background: linear-gradient(90deg, #94a3b8, #cbd5e1);"></div>
+    </div>
+
+    <!-- 1st -->
+    <div class="podium-slot first">
+      <span class="podium-medal">🥇</span>
+      <div class="podium-name">aloha_collector</div>
+      <div class="podium-loc">📍 Kailua, Oahu</div>
+      <div class="podium-count">8</div>
+      <div class="podium-label">CARDS — FULL SET!</div>
+      <div class="podium-bar" style="background: linear-gradient(90deg, #f59e0b, #F5C518);"></div>
+    </div>
+
+    <!-- 3rd -->
+    <div class="podium-slot third" style="background: linear-gradient(180deg, #fdf8f3, white);">
+      <span class="podium-medal">🥉</span>
+      <div class="podium-name">maui_wahine</div>
+      <div class="podium-loc">📍 Kahului, Maui</div>
+      <div class="podium-count">7</div>
+      <div class="podium-label">CARDS</div>
+      <div class="podium-bar" style="background: linear-gradient(90deg, #b45309, #d97706);"></div>
+    </div>
+
+  </div>
+
+  <!-- Filter tabs -->
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="setFilter(this, 'all')">All Islands</button>
+    <button class="filter-tab" onclick="setFilter(this, 'oahu')">Oahu</button>
+    <button class="filter-tab" onclick="setFilter(this, 'maui')">Maui</button>
+    <button class="filter-tab" onclick="setFilter(this, 'big-island')">Big Island</button>
+    <button class="filter-tab" onclick="setFilter(this, 'kauai')">Kauai</button>
+  </div>
+
+  <!-- Your rank (mock — logged out state) -->
+  <div class="your-rank-banner">
+    <div class="yr-left">
+      <div class="yr-title">YOUR RANKING</div>
+      <div class="yr-name">Log in to see your rank 🔒</div>
+    </div>
+    <div class="yr-right">
+      <a href="index.html" style="background: var(--gold); color: #1a1a1a; border-radius: 2rem; padding: 0.5rem 1.2rem; font-weight: 800; font-size: 0.83rem; text-decoration: none; white-space: nowrap;">
+        Collect Cards →
+      </a>
+    </div>
+  </div>
+
+  <!-- Leaderboard table -->
+  <table class="lb-table">
+    <thead>
+      <tr>
+        <th style="width: 48px;">#</th>
+        <th>Collector</th>
+        <th>Location</th>
+        <th>Progress</th>
+        <th>Cards</th>
+      </tr>
+    </thead>
+    <tbody>
+
+      <tr>
+        <td><div class="lb-rank gold">1</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#fef3c7;">🌺</div>
+            <div>
+              <div class="lb-name">aloha_collector</div>
+              <div style="margin-top:2px;"><span class="badge badge-Legendary" style="font-size:0.55rem; padding:0.12rem 0.45rem;">FULL SET</span></div>
+            </div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Kailua, Oahu</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">8 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:100%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">8</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank silver">2</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#e8f5ee;">🏄</div>
+            <div>
+              <div class="lb-name">kai_manoa</div>
+              <div style="margin-top:2px;"><span class="badge badge-Epic" style="font-size:0.55rem; padding:0.12rem 0.45rem;">EPIC COLLECTOR</span></div>
+            </div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Manoa, Oahu</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">7 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:87.5%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">7</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank bronze">3</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#f0f7f3;">🤙</div>
+            <div>
+              <div class="lb-name">maui_wahine</div>
+              <div style="margin-top:2px;"><span class="badge badge-Epic" style="font-size:0.55rem; padding:0.12rem 0.45rem;">EPIC COLLECTOR</span></div>
+            </div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Kahului, Maui</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">7 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:87.5%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">7</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank">4</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#ede9fe;">🌊</div>
+            <div><div class="lb-name">surf_n_sip808</div></div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Haleiwa, Oahu</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">6 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:75%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">6</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank">5</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#fff7ed;">🍍</div>
+            <div><div class="lb-name">pineapple_kai</div></div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Mililani, Oahu</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">6 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:75%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">6</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank">6</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#f0fdf4;">🐢</div>
+            <div><div class="lb-name">honu_hoops</div></div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Hilo, Big Island</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">5 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:62.5%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">5</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank">7</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#fef9c3;">🌺</div>
+            <div><div class="lb-name">wahine808</div></div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Kapaa, Kauai</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">5 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:62.5%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">5</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank">8</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#e8f5ee;">🏈</div>
+            <div><div class="lb-name">warrior_nation</div></div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Pearl City, Oahu</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">4 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:50%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">4</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank">9</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#fce7f3;">🌸</div>
+            <div><div class="lb-name">plumeria_fan</div></div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Wailuku, Maui</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">4 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:50%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">4</div></td>
+      </tr>
+
+      <tr>
+        <td><div class="lb-rank">10</div></td>
+        <td>
+          <div style="display:flex; align-items:center; gap:0.65rem;">
+            <div class="lb-avatar" style="background:#dbeafe;">🏊</div>
+            <div><div class="lb-name">swim_hawaii</div></div>
+          </div>
+        </td>
+        <td><div class="lb-location">📍 Ewa Beach, Oahu</div></td>
+        <td>
+          <div class="lb-progress-wrap">
+            <div style="font-size:0.72rem; color:#666;">3 / 8</div>
+            <div class="lb-progress"><div class="lb-progress-fill" style="width:37.5%;"></div></div>
+          </div>
+        </td>
+        <td><div class="lb-count">3</div></td>
+      </tr>
+
+    </tbody>
+  </table>
+
+  <p style="text-align: center; color: var(--muted); font-size: 0.8rem; margin-top: 1.25rem;">
+    Showing top 10 of 4,821 collectors · Rankings update every 24 hours
+  </p>
+
+</div>
+
+<!-- CHALLENGE BANNER -->
+<div style="background: var(--light-green); padding: 3rem 1.5rem;">
+  <div style="max-width: 900px; margin: 0 auto; display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; align-items: center;">
+    <div>
+      <div class="section-label">ISLAND CHALLENGE</div>
+      <h2 style="font-size: 1.65rem; font-weight: 900; color: var(--text); margin-bottom: 0.75rem; line-height: 1.2;">Which Island Will Collect the Most?</h2>
+      <p style="color: var(--muted); font-size: 0.9rem; line-height: 1.65; margin-bottom: 1.25rem;">Track your island's progress in the statewide collection race. The island with the highest average cards per collector at the end of Series 1 wins a Meadow Gold community event!</p>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 0.85rem;">
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">
+          <span>🌺 Oahu</span><span style="color: var(--green);">4.2 avg</span>
+        </div>
+        <div style="background: #dde8e0; border-radius: 1rem; height: 10px;">
+          <div style="width: 87%; background: linear-gradient(90deg, var(--green), #43a868); height: 100%; border-radius: 1rem;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">
+          <span>🌺 Maui</span><span style="color: var(--green);">3.8 avg</span>
+        </div>
+        <div style="background: #dde8e0; border-radius: 1rem; height: 10px;">
+          <div style="width: 76%; background: linear-gradient(90deg, var(--green), #43a868); height: 100%; border-radius: 1rem;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">
+          <span>🌺 Big Island</span><span style="color: var(--green);">3.5 avg</span>
+        </div>
+        <div style="background: #dde8e0; border-radius: 1rem; height: 10px;">
+          <div style="width: 70%; background: linear-gradient(90deg, var(--green), #43a868); height: 100%; border-radius: 1rem;"></div>
+        </div>
+      </div>
+      <div>
+        <div style="display: flex; justify-content: space-between; font-size: 0.8rem; font-weight: 700; margin-bottom: 4px;">
+          <span>🌺 Kauai</span><span style="color: var(--green);">3.1 avg</span>
+        </div>
+        <div style="background: #dde8e0; border-radius: 1rem; height: 10px;">
+          <div style="width: 62%; background: linear-gradient(90deg, var(--green), #43a868); height: 100%; border-radius: 1rem;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-banner" style="margin-top: 4rem;">
+  <h2>Climb the <span>Rankings</span></h2>
+  <p>Every cap code is a chance to move up. Start collecting and see your name on the board.</p>
+  <a href="index.html" class="btn-primary">Enter Your Cap Code 🏄</a>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="f-brand-name">🐄 MEADOW GOLD</div>
+      <div class="f-brand-sub">× UH WARRIORS</div>
+      <p>Hawaii's beloved dairy brand meets the spirit of UH Warriors athletics in a gamified collectible card experience.</p>
+    </div>
+    <div class="footer-col">
+      <h4>COLLECT</h4>
+      <a href="index.html">Start Collecting</a>
+      <a href="prizes.html">View All Cards</a>
+      <a href="leaderboard.html">Leaderboard</a>
+    </div>
+    <div class="footer-col">
+      <h4>INFO</h4>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="about.html">About the Partnership</a>
+      <a href="#">Official Rules</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Meadow Gold × UH Warriors. Innovate808 Competition Prototype.</span>
+    <span>Made with 🤙 in Hawaii</span>
+  </div>
+</footer>
+
+<script>
+  function setFilter(btn, filter) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    // In a real app, this would filter the table. For this prototype it's a UI demo.
+  }
+</script>
+
+</body>
+</html>

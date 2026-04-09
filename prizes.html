@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>All Cards &amp; Prizes — Meadow Gold × UH Warriors</title>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <style>
+    .card-wrap {
+      border-radius: 1.5rem;
+      overflow: hidden;
+      position: relative;
+      box-shadow: 0 6px 32px rgba(0,0,0,0.14);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .card-wrap:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 16px 48px rgba(0,0,0,0.22);
+    }
+    .card-rarity-tag {
+      position: absolute;
+      top: 0.75rem;
+      left: 0.75rem;
+      z-index: 10;
+    }
+    .card-inner-body {
+      padding: 1rem 1.1rem 1.15rem;
+      background: rgba(0,0,0,0.55);
+      backdrop-filter: blur(6px);
+    }
+    .card-sport-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.6);
+      margin-bottom: 0.25rem;
+    }
+    .card-name {
+      color: white;
+      font-weight: 900;
+      font-size: 0.95rem;
+      line-height: 1.25;
+    }
+    .card-sub {
+      color: rgba(255,255,255,0.65);
+      font-size: 0.7rem;
+      margin-top: 0.2rem;
+    }
+    .uh-tag {
+      margin-top: 0.55rem;
+      background: rgba(255,255,255,0.15);
+      border-radius: 0.4rem;
+      padding: 0.18rem 0.45rem;
+      display: inline-block;
+      color: white;
+      font-size: 0.58rem;
+      font-weight: 800;
+      letter-spacing: 1px;
+    }
+    .prize-special {
+      border: 2px solid rgba(245,197,24,0.6);
+      box-shadow: 0 8px 40px rgba(245,197,24,0.2);
+    }
+    .athlete-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .prize-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.75rem;
+    }
+    .card-photo {
+      width: 100%;
+      height: 220px;
+      object-fit: cover;
+      object-position: top center;
+      display: block;
+    }
+    .card-emoji-block {
+      width: 100%;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 5rem;
+    }
+    .prize-photo {
+      width: 100%;
+      height: 240px;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav class="site-nav">
+  <div class="nav-inner">
+    <a href="index.html" class="nav-brand">
+      <span class="nav-emoji">🐄</span>
+      <div class="nav-brand-text">
+        <div class="brand-name">MEADOW GOLD</div>
+        <div class="brand-sub">× UH WARRIORS</div>
+      </div>
+    </a>
+    <button class="nav-toggle" onclick="document.getElementById('nav-menu').classList.toggle('open')" aria-label="Menu">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+        <line x1="3" y1="6" x2="21" y2="6"/>
+        <line x1="3" y1="12" x2="21" y2="12"/>
+        <line x1="3" y1="18" x2="21" y2="18"/>
+      </svg>
+    </button>
+    <div class="nav-links" id="nav-menu">
+      <a href="index.html">Collect</a>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="prizes.html" class="active">Prizes</a>
+      <a href="leaderboard.html">Leaderboard</a>
+      <a href="about.html">About</a>
+    </div>
+    <a href="index.html" class="nav-cta">Start Collecting 🏄</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<section class="page-hero">
+  <div class="eyebrow">SERIES 1 — 8 CARDS TOTAL</div>
+  <h1>All Cards &amp; <span>Prizes</span></h1>
+  <p>Discover every card in the inaugural Meadow Gold × UH Warriors collection — six athlete cards and two exclusive real-world prizes.</p>
+</section>
+
+<!-- PRIZE CARDS (highlight first) -->
+<div class="section" style="padding-bottom: 2.5rem;">
+  <div class="section-label">RAREST FINDS</div>
+  <h2 class="section-title">Prize Cards</h2>
+  <p class="section-sub">Land one of these and you've won something real. Prize cards are the hardest to find — and the most rewarding.</p>
+
+  <div class="prize-cards-grid">
+
+    <!-- Lani Moo Farm Experience -->
+    <div class="card-wrap prize-special" style="background: linear-gradient(135deg, #b8860a, #F5C518);">
+      <div class="card-rarity-tag"><span class="badge badge-Legendary">LEGENDARY</span></div>
+      <img src="LaniMoo.png" alt="Lani Moo Farm Experience" class="prize-photo"/>
+      <div class="card-inner-body">
+        <div class="card-sport-label">🏆 SPECIAL PRIZE</div>
+        <div class="card-name">Lani Moo Farm Experience</div>
+        <div class="card-sub">A nostalgic guided tour inspired by Hawaii's beloved Lani Moo dairy tradition — for you and a guest.</div>
+        <div style="margin-top: 0.85rem; background: rgba(245,197,24,0.2); border-radius: 0.75rem; padding: 0.75rem 1rem; border: 1px solid rgba(245,197,24,0.4);">
+          <div style="color: #F5C518; font-size: 0.68rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 0.35rem;">WHAT YOU WIN</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.35rem;">
+            <li style="color: white; font-size: 0.82rem;">🌿 Guided Meadow Gold farm tour</li>
+            <li style="color: white; font-size: 0.82rem;">🥛 Dairy tasting experience</li>
+            <li style="color: white; font-size: 0.82rem;">📸 Exclusive Lani Moo photo op</li>
+            <li style="color: white; font-size: 0.82rem;">🎁 Meadow Gold gift basket</li>
+          </ul>
+        </div>
+        <div class="uh-tag">CODE: 000001</div>
+      </div>
+    </div>
+
+    <!-- UH Game Day VIP -->
+    <div class="card-wrap prize-special" style="background: linear-gradient(135deg, #9a6f00, #e8a800);">
+      <div class="card-rarity-tag"><span class="badge badge-Epic">EPIC</span></div>
+      <div class="card-emoji-block" style="background: linear-gradient(135deg, #9a6f00, #e8a800);">🎟️</div>
+      <div class="card-inner-body">
+        <div class="card-sport-label">🏆 SPECIAL PRIZE</div>
+        <div class="card-name">UH Game Day VIP</div>
+        <div class="card-sub">Two VIP tickets to any UH Warriors home game, plus a Meadow Gold snack pack.</div>
+        <div style="margin-top: 0.85rem; background: rgba(245,197,24,0.2); border-radius: 0.75rem; padding: 0.75rem 1rem; border: 1px solid rgba(245,197,24,0.4);">
+          <div style="color: #F5C518; font-size: 0.68rem; font-weight: 800; letter-spacing: 1px; margin-bottom: 0.35rem;">WHAT YOU WIN</div>
+          <ul style="list-style: none; display: flex; flex-direction: column; gap: 0.35rem;">
+            <li style="color: white; font-size: 0.82rem;">🏟️ 2× VIP seats to any UH home game</li>
+            <li style="color: white; font-size: 0.82rem;">🥛 Meadow Gold snack pack</li>
+            <li style="color: white; font-size: 0.82rem;">🤙 UH Warriors merchandise</li>
+            <li style="color: white; font-size: 0.82rem;">📸 Pre-game field access</li>
+          </ul>
+        </div>
+        <div class="uh-tag">CODE: 000002</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="section-divider"/>
+
+<!-- ATHLETE CARDS -->
+<div class="section" style="padding-top: 3.5rem;">
+  <div class="section-label">SERIES 1 — ATHLETE CARDS</div>
+  <h2 class="section-title">UH Warrior Athletes</h2>
+  <p class="section-sub">Six athletes. Six sports. Collect them all to complete the set.</p>
+
+  <div class="athlete-grid">
+
+    <!-- Karol Ostrowski -->
+    <div class="card-wrap" style="background: linear-gradient(135deg, #004d1a, #007A33);">
+      <div class="card-rarity-tag"><span class="badge badge-Epic">EPIC</span></div>
+      <img src="Karol_O.png" alt="Karol Ostrowski" class="card-photo"/>
+      <div class="card-inner-body">
+        <div class="card-sport-label">🏊‍♂️ SWIMMING</div>
+        <div class="card-name">Karol Ostrowski</div>
+        <div class="card-sub">Freestyler · Men's Swim Team</div>
+        <div class="uh-tag">🌺 UH WARRIORS</div>
+      </div>
+    </div>
+
+    <!-- Holly Nelson -->
+    <div class="card-wrap" style="background: linear-gradient(135deg, #004d1a, #007A33);">
+      <div class="card-rarity-tag"><span class="badge badge-Epic">EPIC</span></div>
+      <img src="Holly_N.png" alt="Holly Nelson" class="card-photo"/>
+      <div class="card-inner-body">
+        <div class="card-sport-label">🏐 VOLLEYBALL</div>
+        <div class="card-name">Holly Nelson</div>
+        <div class="card-sub">Outside Hitter · Women's Volleyball</div>
+        <div class="uh-tag">🌺 UH WARRIORS</div>
+      </div>
+    </div>
+
+    <!-- Warrior #3 Football -->
+    <div class="card-wrap" style="background: linear-gradient(135deg, #007A33, #43a868);">
+      <div class="card-rarity-tag"><span class="badge badge-Rare">RARE</span></div>
+      <div class="card-emoji-block" style="background: linear-gradient(135deg, #007A33, #43a868);">🏈</div>
+      <div class="card-inner-body">
+        <div class="card-sport-label">🏈 FOOTBALL</div>
+        <div class="card-name">Warrior #3</div>
+        <div class="card-sub">Linebacker · Warriors Football</div>
+        <div class="uh-tag">🌺 UH WARRIORS</div>
+      </div>
+    </div>
+
+    <!-- Warrior #4 Baseball -->
+    <div class="card-wrap" style="background: linear-gradient(135deg, #1b6e3a, #007A33);">
+      <div class="card-rarity-tag"><span class="badge badge-Common">COMMON</span></div>
+      <div class="card-emoji-block" style="background: linear-gradient(135deg, #1b6e3a, #007A33);">⚾</div>
+      <div class="card-inner-body">
+        <div class="card-sport-label">⚾ BASEBALL</div>
+        <div class="card-name">Warrior #4</div>
+        <div class="card-sub">Pitcher · Rainbow Warriors Baseball</div>
+        <div class="uh-tag">🌺 UH WARRIORS</div>
+      </div>
+    </div>
+
+    <!-- Warrior #5 Women's Basketball -->
+    <div class="card-wrap" style="background: linear-gradient(135deg, #007A33, #5cb87d);">
+      <div class="card-rarity-tag"><span class="badge badge-Common">COMMON</span></div>
+      <div class="card-emoji-block" style="background: linear-gradient(135deg, #007A33, #5cb87d);">🏀</div>
+      <div class="card-inner-body">
+        <div class="card-sport-label">🏀 WOMEN'S BASKETBALL</div>
+        <div class="card-name">Warrior #5</div>
+        <div class="card-sub">Forward · Rainbow Wahine Basketball</div>
+        <div class="uh-tag">🌺 UH WARRIORS</div>
+      </div>
+    </div>
+
+    <!-- Warrior #6 Soccer -->
+    <div class="card-wrap" style="background: linear-gradient(135deg, #005522, #007A33);">
+      <div class="card-rarity-tag"><span class="badge badge-Rare">RARE</span></div>
+      <div class="card-emoji-block" style="background: linear-gradient(135deg, #005522, #007A33);">⚽</div>
+      <div class="card-inner-body">
+        <div class="card-sport-label">⚽ SOCCER</div>
+        <div class="card-name">Warrior #6</div>
+        <div class="card-sub">Midfielder · Rainbow Wahine Soccer</div>
+        <div class="uh-tag">🌺 UH WARRIORS</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<hr class="section-divider" style="margin-top: 0;"/>
+
+<!-- RARITY GUIDE -->
+<div class="section" style="padding-top: 3rem; padding-bottom: 3.5rem;">
+  <div class="section-label">RARITY GUIDE</div>
+  <h2 class="section-title">Understanding Card Rarities</h2>
+  <p class="section-sub">Not all caps are equal — rarer cards are harder to find and more valuable in your collection.</p>
+
+  <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 1.25rem; margin-top: 2rem;">
+
+    <div style="background: white; border: 2px solid #e5e7eb; border-radius: 1.1rem; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start;">
+      <span class="badge badge-Common" style="margin-top: 2px; padding: 0.3rem 0.7rem; font-size: 0.68rem;">COMMON</span>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: #111; margin-bottom: 0.3rem;">Common</div>
+        <div style="font-size: 0.82rem; color: #666; line-height: 1.55;">Found most frequently. A great starting point for new collectors. 2 cards in this tier.</div>
+      </div>
+    </div>
+
+    <div style="background: white; border: 2px solid #dbeafe; border-radius: 1.1rem; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start;">
+      <span class="badge badge-Rare" style="margin-top: 2px; padding: 0.3rem 0.7rem; font-size: 0.68rem;">RARE</span>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: #111; margin-bottom: 0.3rem;">Rare</div>
+        <div style="font-size: 0.82rem; color: #666; line-height: 1.55;">Less common but still achievable with a few gallons. 2 athlete cards in this tier.</div>
+      </div>
+    </div>
+
+    <div style="background: white; border: 2px solid #ede9fe; border-radius: 1.1rem; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start;">
+      <span class="badge badge-Epic" style="margin-top: 2px; padding: 0.3rem 0.7rem; font-size: 0.68rem;">EPIC</span>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: #111; margin-bottom: 0.3rem;">Epic</div>
+        <div style="font-size: 0.82rem; color: #666; line-height: 1.55;">Harder to find. Includes the featured athletes Karol &amp; Holly, plus the VIP prize card.</div>
+      </div>
+    </div>
+
+    <div style="background: white; border: 2px solid #fef3c7; border-radius: 1.1rem; padding: 1.5rem; display: flex; gap: 1rem; align-items: flex-start;">
+      <span class="badge badge-Legendary" style="margin-top: 2px; padding: 0.3rem 0.7rem; font-size: 0.68rem;">LEGENDARY</span>
+      <div>
+        <div style="font-weight: 800; font-size: 0.95rem; color: #111; margin-bottom: 0.3rem;">Legendary</div>
+        <div style="font-size: 0.82rem; color: #666; line-height: 1.55;">The rarest card in the set. Only the Lani Moo Farm Experience prize holds this status.</div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- CTA -->
+<div class="cta-banner">
+  <h2>Try Your Luck — <span>Start Collecting</span></h2>
+  <p>Every gallon is a chance at a Legendary. Enter your cap code now.</p>
+  <a href="index.html" class="btn-primary">Enter Your Cap Code ✨</a>
+</div>
+
+<!-- FOOTER -->
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div class="f-brand-name">🐄 MEADOW GOLD</div>
+      <div class="f-brand-sub">× UH WARRIORS</div>
+      <p>Hawaii's beloved dairy brand meets the spirit of UH Warriors athletics in a gamified collectible card experience.</p>
+    </div>
+    <div class="footer-col">
+      <h4>COLLECT</h4>
+      <a href="index.html">Start Collecting</a>
+      <a href="prizes.html">View All Cards</a>
+      <a href="leaderboard.html">Leaderboard</a>
+    </div>
+    <div class="footer-col">
+      <h4>INFO</h4>
+      <a href="how-it-works.html">How It Works</a>
+      <a href="about.html">About the Partnership</a>
+      <a href="#">Official Rules</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Meadow Gold × UH Warriors. Innovate808 Competition Prototype.</span>
+    <span>Made with 🤙 in Hawaii</span>
+  </div>
+</footer>
+
+</body>
+</html>

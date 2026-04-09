@@ -129,6 +129,18 @@ function App() {
       </div>
       <button onClick={()=>setScreen('quiz')} style={{...btn('#F5C518','#1a1a1a',{width:'auto',padding:'1rem 3rem',borderRadius:'2rem',boxShadow:'0 4px 20px rgba(245,197,24,0.45)'})}}>GET STARTED 🏄</button>
       <p style={{color:'rgba(255,255,255,0.35)',fontSize:'0.72rem',marginTop:'1.25rem'}}>No purchase necessary. See official rules.</p>
+      <div style={{display:'flex',gap:'1.75rem',marginTop:'2rem',flexWrap:'wrap',justifyContent:'center'}}>
+        {[
+          {href:'how-it-works.html',label:'How It Works'},
+          {href:'prizes.html',label:'All Cards'},
+          {href:'leaderboard.html',label:'Leaderboard'},
+          {href:'about.html',label:'About'},
+        ].map(({href,label})=>(
+          <a key={href} href={href} style={{color:'rgba(255,255,255,0.45)',fontSize:'0.8rem',textDecoration:'none',fontWeight:600,borderBottom:'1px solid rgba(255,255,255,0.2)',paddingBottom:'1px',transition:'color 0.2s'}}>
+            {label}
+          </a>
+        ))}
+      </div>
     </div>
   );
 
